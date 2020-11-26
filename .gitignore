@@ -1,4 +1,4 @@
 data_pipeline/secrets.py
-data_pipeline/file.json
+data_pipeline/test.json
 .vscode
 __pycache__/
