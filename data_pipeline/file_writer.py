@@ -4,7 +4,6 @@ import json
 from string_builder import string_builder
 
 import pyodbc
-from imports import dsn
 
 sb = string_builder()
 

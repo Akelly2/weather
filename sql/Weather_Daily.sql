@@ -1,0 +1,20 @@
+CREATE TABLE Weather_Daily (
+    "datetime" BIGINT,
+    Current_or_Forecast varchar(15),
+    Location_Key INT,
+    Temperature,
+    Feels_Like,
+    Pressure,
+    Humidity,
+    Dew_Point,
+    Clouds,
+    UVI ,
+    Visibility,
+    Wind_Speed,
+    Wind_Direction,
+    Conditions,
+    Sunrise,
+    Sunset,
+    Minimum_Temperature,
+    Maximum_Temperature
+);

@@ -12,6 +12,7 @@ modules
 """
 import pandas as pd
 pd.set_option('max_colwidth', None)
+import json
 import io
 import requests
 import pyodbc
@@ -26,10 +27,17 @@ qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 # request and response is done
 response = requests.get(
     'https://api.openweathermap.org/data/2.5/onecall',
-    params={'lat': 49.2827, 'lon': 123.1207, 'exclude': 'minutely', 'appid': openweathermap_api_key},
+    params={
+        'lat': 49.2827, 'lon': -123.1207,
+        'exclude': 'minutely,alerts',
+        'appid': openweathermap_api_key
+    },
     headers={'Accept': 'application/json'}
 )
-print(response.json())
+
+# print()
+
+with open('data_pipeline/data/test.json', 'w') as file_out:
+    json.dump(response.json(), file_out)
 
 # df = pd.read_json(io.StringIO(response.content.decode('utf-8')))
-

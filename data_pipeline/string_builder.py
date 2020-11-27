@@ -4,15 +4,7 @@ class string_builder:
     def __init__(self):
         pass
 
-    def create_tiingo_url_daily(self, dates, token, symbol):
-        startDate = dates[0]
-        endDate = dates[1] 
-        return f"https://api.tiingo.com/tiingo/daily/{symbol}/prices?startDate={startDate}&endDate={endDate}&token={token}"
-
-    def create_tiingo_url_realtime(self, date, token, ticker):
-        return f"https://api.tiingo.com/iex/{ticker}/prices?startDate={date}&resampleFreq=5min&token={token}"
-
-    def column_list_to_string(self, list_):
+    def column_list_to_string(self, list_: list):
         list_ = tuple(list_)
         string_list = str(list_)
         return string_list
