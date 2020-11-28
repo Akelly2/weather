@@ -29,13 +29,16 @@ with open('data_pipeline/data/test.json', 'r') as file_in:
     data = json.load(file_in)
     print(data)
     try:
-        # appropriate coljumns are selected
+        # appropriate data is selected
         
-        df['datetime'] = df['datetime'].map(lambda d: str(d)[:10])
+
         # connection to PostgreSQL is created and rows are inserted
         print("Writing data.")
-        column_string = '()'
+        column_string = """("datetime",Current_or_Forecast,Location_Key,Temperature,Feels_Like,Pressure,Humidity,
+                            Dew_Point,Clouds,Visibility,REAL,Wind_Direction,Condition_Name,Condition_Description)"""
         sql = qb.create_insert_statement('security_price_daily', column_string, sb.table_to_string(df))
         qe.execute_query(sql)
         qe.close_()
+    except:
+        print("There was a problem.")
 

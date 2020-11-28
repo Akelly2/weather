@@ -8,9 +8,13 @@ CREATE TABLE Weather_Hourly (
     Pressure SMALLINT,
     Humidity SMALLINT,
     Dew_Point REAL,
-    Clouds ,
-    Visibility,
-    Wind_Speed,
-    Wind_Direction,
-    Conditions
+    Clouds SMALLINT,
+    Visibility INT,
+    Wind_Speed REAL,
+    Wind_Direction SMALLINT,
+    Probability_of_Precipitation SMALLINT,
+    Rain_mm VARCHAR(100),
+    Snow_mm VARCHAR(100)
+    Condition_Description VARCHAR(100),
+
 );

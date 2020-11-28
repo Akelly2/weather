@@ -28,16 +28,16 @@ qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 response = requests.get(
     'https://api.openweathermap.org/data/2.5/onecall',
     params={
-        'lat': 49.2827, 'lon': -123.1207,
+        'lat': 33.2827, 'lon': -112.1207,
         'exclude': 'minutely,alerts',
         'appid': openweathermap_api_key
     },
     headers={'Accept': 'application/json'}
 )
 
-# print()
+print(response.json())
 
-with open('data_pipeline/data/test.json', 'w') as file_out:
-    json.dump(response.json(), file_out)
+# with open('data_pipeline/data/test.json', 'w') as file_out:
+#     json.dump(response.json(), file_out)
 
 # df = pd.read_json(io.StringIO(response.content.decode('utf-8')))
