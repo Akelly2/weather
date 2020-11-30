@@ -14,7 +14,8 @@ CREATE TABLE Weather_Hourly (
     Wind_Direction SMALLINT,
     Probability_of_Precipitation SMALLINT,
     Rain_mm VARCHAR(100),
-    Snow_mm VARCHAR(100)
+    Snow_mm VARCHAR(100),
+    Condition_Name VARCHAR(100),
     Condition_Description VARCHAR(100),
 
 );

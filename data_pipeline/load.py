@@ -27,18 +27,37 @@ qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 # hourly data is written
 with open('data_pipeline/data/test.json', 'r') as file_in:
     data = json.load(file_in)
-    print(data)
-    try:
-        # appropriate data is selected
+    # print(data)
+    # try:
+    if 1 == 1:
+        # neccessary data is collected
+        # columns are created from nested JSON 
         
+        # skyfall is reassigned
+        try: 
+            data["current"]["precipitation_mm"] = data["current"]["rain"]["1h"]
+        except:
+            data["current"]["precipitation_mm"] = 0
+            print("No precipitation.")
+        try: 
+            data["current"]["snow_mm"] = data["current"]["snow"]["1h"]
+        except:
+            data["current"]["snow_mm"] = 0
+            print("No snow.")
+
+
+        data["current"]["condition_name"] = data["current"]["weather"][0]["main"]
+        data["current"]["condition_description"] = data["current"]["weather"][0]["description"]
+        print(data["current"])
+
 
         # connection to PostgreSQL is created and rows are inserted
-        print("Writing data.")
-        column_string = """("datetime",Current_or_Forecast,Location_Key,Temperature,Feels_Like,Pressure,Humidity,
-                            Dew_Point,Clouds,Visibility,REAL,Wind_Direction,Condition_Name,Condition_Description)"""
-        sql = qb.create_insert_statement('security_price_daily', column_string, sb.table_to_string(df))
-        qe.execute_query(sql)
-        qe.close_()
-    except:
-        print("There was a problem.")
+        # print("Writing data.")
+        # column_string = """("datetime",Current_or_Forecast,Location_Key,Temperature,Feels_Like,Pressure,Humidity,
+        #                     Dew_Point,Clouds,Visibility,REAL,Wind_Direction,Condition_Name,Condition_Description)"""
+        # sql = qb.create_insert_statement('security_price_daily', column_string, sb.table_to_string(df))
+        # qe.execute_query(sql)
+        # qe.close_()
+    # except:
+        # print("There was a problem.")
 
