@@ -35,21 +35,45 @@ with open('data_pipeline/data/test.json', 'r') as file_in:
         
         # skyfall is reassigned
         try: 
-            data["current"]["precipitation_mm"] = data["current"]["rain"]["1h"]
+            data["current"]["rain_mm"] = data["current"]["rain"]["1h"]
         except:
-            data["current"]["precipitation_mm"] = 0
-            print("No precipitation.")
+            data["current"]["rain_mm"] = 0
+            print("No rain.")
         try: 
             data["current"]["snow_mm"] = data["current"]["snow"]["1h"]
         except:
             data["current"]["snow_mm"] = 0
             print("No snow.")
 
-
         data["current"]["condition_name"] = data["current"]["weather"][0]["main"]
         data["current"]["condition_description"] = data["current"]["weather"][0]["description"]
+        
+        del data["current"]["weather"]
+        
         print(data["current"])
 
+        for item in data["daily"]:
+            print(item)
+            # skyfall is reassigned
+            try: 
+                item["rain_mm"] = item["rain"]["1h"]
+            except:
+                item["rain_mm"] = 0
+                print("No rain.")
+            try: 
+                item["snow_mm"] = item["snow"]["1h"]
+            except:
+                item["snow_mm"] = 0
+                print("No snow.")
+
+            item["condition_name"] = item["weather"][0]["main"]
+            item["condition_description"] = item["weather"][0]["description"]
+            
+            del item["weather"]
+        
+        print(data)
+        with open('data_pipeline/data/test2.json', 'w') as file_out:
+            json.dump(data, file_out)
 
         # connection to PostgreSQL is created and rows are inserted
         # print("Writing data.")
