@@ -46,14 +46,13 @@ with open('data_pipeline/data/test.json', 'r') as file_in:
             data["current"]["snow_mm"] = 0
             print("No snow.")
 
+        # Conditions are reassigned as key-values
         data["current"]["condition_name"] = data["current"]["weather"][0]["main"]
         data["current"]["condition_description"] = data["current"]["weather"][0]["description"]
         
         del data["current"]["weather"]
-        
-        
-        print(data["current"])
 
+        # The same transformation is applied to each forecast
         for item in data["hourly"]:
             print(item)
             # skyfall is reassigned
