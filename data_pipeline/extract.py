@@ -37,7 +37,7 @@ response = requests.get(
 
 print(response.json())
 
-# with open('data_pipeline/data/test.json', 'w') as file_out:
-#     json.dump(response.json(), file_out)
+with open('data_pipeline/data/test.json', 'w') as file_out:
+    json.dump(response.json(), file_out)
 
 # df = pd.read_json(io.StringIO(response.content.decode('utf-8')))
