@@ -36,6 +36,7 @@ with open('data_pipeline/data/test.json', 'r') as file_in:
         # skyfall is reassigned
         try: 
             data["current"]["rain_mm"] = data["current"]["rain"]["1h"]
+            del data["current"]["rain"]
         except:
             data["current"]["rain_mm"] = 0
             print("No rain.")
@@ -50,13 +51,15 @@ with open('data_pipeline/data/test.json', 'r') as file_in:
         
         del data["current"]["weather"]
         
+        
         print(data["current"])
 
-        for item in data["daily"]:
+        for item in data["hourly"]:
             print(item)
             # skyfall is reassigned
             try: 
                 item["rain_mm"] = item["rain"]["1h"]
+                del item["rain"]
             except:
                 item["rain_mm"] = 0
                 print("No rain.")
@@ -70,8 +73,10 @@ with open('data_pipeline/data/test.json', 'r') as file_in:
             item["condition_description"] = item["weather"][0]["description"]
             
             del item["weather"]
-        
+            
+
         print(data)
+
         with open('data_pipeline/data/test2.json', 'w') as file_out:
             json.dump(data, file_out)
 

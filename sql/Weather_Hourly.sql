@@ -12,7 +12,7 @@ CREATE TABLE Weather_Hourly (
     Visibility INT,
     Wind_Speed REAL,
     Wind_Direction SMALLINT,
-    Probability_of_Precipitation SMALLINT,
+    Probability_of_Precipitation REAL,
     Rain_mm VARCHAR(100),
     Snow_mm VARCHAR(100),
     Condition_Name VARCHAR(100),
