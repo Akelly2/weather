@@ -3,3 +3,5 @@ data_pipeline/test.json
 .vscode
 __pycache__/
 testdata/
+data/
+test.py

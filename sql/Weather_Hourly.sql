@@ -8,6 +8,7 @@ CREATE TABLE Weather_Hourly (
     Pressure SMALLINT,
     Humidity SMALLINT,
     Dew_Point REAL,
+    UVI REAL,
     Clouds SMALLINT,
     Visibility INT,
     Wind_Speed REAL,
@@ -17,5 +18,4 @@ CREATE TABLE Weather_Hourly (
     Snow_mm VARCHAR(100),
     Condition_Name VARCHAR(100),
     Condition_Description VARCHAR(100),
-
 );

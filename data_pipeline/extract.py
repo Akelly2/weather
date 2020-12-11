@@ -22,22 +22,28 @@ from datetime import datetime, timedelta
 sb = string_builder()
 qb = query_builder()
 dr = data_reader()
+
 qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
+sql = """ SELECT Location_Key, Latitude, Longitude FROM "Location" """
+location_list = qe.get_results(sql, result_format="dict-list")
 
-# request and response is done
-response = requests.get(
-    'https://api.openweathermap.org/data/2.5/onecall',
-    params={
-        'lat': 33.2827, 'lon': -112.1207,
-        'exclude': 'minutely,alerts',
-        'appid': openweathermap_api_key
-    },
-    headers={'Accept': 'application/json'}
-)
+for location in location_list: 
 
-print(response.json())
 
-with open('data_pipeline/data/test.json', 'w') as file_out:
-    json.dump(response.json(), file_out)
+    print('Accessing data for:', location["location_key"], location["latitude"], location["longitude"])
+
+    # request and response is done
+    response = requests.get(
+        'https://api.openweathermap.org/data/2.5/onecall',
+        params={
+            'lat': location["latitude"], 'lon': location["longitude"],
+            'exclude': 'minutely,alerts',
+            'appid': openweathermap_api_key
+        },
+        headers={'Accept': 'application/json'}
+    )
+
+    with open('data_pipeline/testdata/test.json', 'w') as file_out:
+        json.dump(response.json(), file_out)
 
 # df = pd.read_json(io.StringIO(response.content.decode('utf-8')))

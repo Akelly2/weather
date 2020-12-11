@@ -28,11 +28,17 @@ class query_executor:
     def __init__(self, connector: pyodbc.Connection):
         self.connector = connector
         
-    def get_results(self, sql):
-        # try: 
+    def get_results(self, sql, result_format="df"):
+        if result_format == "df":
             return pd.read_sql(sql, self.connector)
-        # except:
-            # return 'There was a problem.' 
+        elif result_format == "dict-list":
+            cursor = self.connector.cursor().execute(sql)
+            columns = [column[0] for column in cursor.description]
+            results = []
+            for row in cursor.fetchall():
+                results.append(dict(zip(columns, row)))
+            cursor.close()
+            return results
 
     def execute_query(self, sql):
         try: 

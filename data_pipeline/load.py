@@ -25,7 +25,7 @@ dr = data_reader()
 qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 
 # hourly data is written
-with open('data_pipeline/data/test.json', 'r') as file_in:
+with open('data_pipeline/testdata/test.json', 'r') as file_in:
     data = json.load(file_in)
     # print(data)
     # try:
@@ -73,13 +73,13 @@ with open('data_pipeline/data/test.json', 'r') as file_in:
             
             del item["weather"]
             
-
         print(data)
 
-        with open('data_pipeline/data/test2.json', 'w') as file_out:
+        with open('data_pipeline/testdata/test2.json', 'w') as file_out:
             json.dump(data, file_out)
 
         # connection to PostgreSQL is created and rows are inserted
+        
         # print("Writing data.")
         # column_string = """("datetime",Current_or_Forecast,Location_Key,Temperature,Feels_Like,Pressure,Humidity,
         #                     Dew_Point,Clouds,Visibility,REAL,Wind_Direction,Condition_Name,Condition_Description)"""
