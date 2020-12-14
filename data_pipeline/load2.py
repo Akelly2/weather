@@ -47,9 +47,8 @@ with open('data_pipeline/testdata/test2.json', 'r') as file_in:
     print("Writing data.")
     column_string = """("datetime",Current_or_Forecast,Location_Key,Temperature,Feels_Like,Pressure,Humidity,
                         Dew_Point,Clouds,Visibility,REAL,Wind_Direction,Condition_Name,Condition_Description)"""
-    sql = qb.create_insert_statement('Weather_Hourly', column_string, sb.table_to_string(df))
+    sql = qb.create_insert_statement('Weather_Hourly', column_string, sb.table_to_string(df_combined))
     qe.execute_query(sql)
     qe.close_()
-
 
     print(df_combined.head())

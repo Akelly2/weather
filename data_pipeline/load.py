@@ -14,6 +14,7 @@ import json
 import pandas as pd
 pd.set_option('max_colwidth', None)
 import io
+import os
 import requests
 import pyodbc
 import sys
@@ -24,68 +25,80 @@ qb = query_builder()
 dr = data_reader()
 qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 
-# hourly data is written
-with open('data_pipeline/testdata/test.json', 'r') as file_in:
-    data = json.load(file_in)
-    # print(data)
-    # try:
-    if 1 == 1:
-        # neccessary data is collected
-        # columns are created from nested JSON 
-        
-        # skyfall is reassigned
-        try: 
-            data["current"]["rain_mm"] = data["current"]["rain"]["1h"]
-            del data["current"]["rain"]
-        except:
-            data["current"]["rain_mm"] = 0
-            print("No rain.")
-        try: 
-            data["current"]["snow_mm"] = data["current"]["snow"]["1h"]
-        except:
-            data["current"]["snow_mm"] = 0
-            print("No snow.")
-
-        # Conditions are reassigned as key-values
-        data["current"]["condition_name"] = data["current"]["weather"][0]["main"]
-        data["current"]["condition_description"] = data["current"]["weather"][0]["description"]
-        
-        del data["current"]["weather"]
-
-        # The same transformation is applied to each forecast
-        for item in data["hourly"]:
-            print(item)
+for filename in os.listdir('data_pipeline/data'):
+    # file is opened
+    key = filename[8]
+    with open(f'data_pipeline/data/{filename}', 'r') as file_in:
+        data = json.load(file_in)
+        # print(data)
+        # try:
+        if True:
+            
             # skyfall is reassigned
             try: 
-                item["rain_mm"] = item["rain"]["1h"]
-                del item["rain"]
+                data["current"]["rain_mm"] = data["current"]["rain"]["1h"]
+                del data["current"]["rain"]
             except:
-                item["rain_mm"] = 0
-                print("No rain.")
+                data["current"]["rain_mm"] = 0
             try: 
-                item["snow_mm"] = item["snow"]["1h"]
+                data["current"]["snow_mm"] = data["current"]["snow"]["1h"]
             except:
-                item["snow_mm"] = 0
-                print("No snow.")
+                data["current"]["snow_mm"] = 0
 
-            item["condition_name"] = item["weather"][0]["main"]
-            item["condition_description"] = item["weather"][0]["description"]
+            # Conditions are reassigned as key-values
+            data["current"]["condition_name"] = data["current"]["weather"][0]["main"]
+            data["current"]["condition_description"] = data["current"]["weather"][0]["description"]
             
-            del item["weather"]
+            del data["current"]["weather"]
+
+            # The same transformation is applied to each forecast
+            for item in data["hourly"]:
+                # skyfall is reassigned
+                try: 
+                    item["rain_mm"] = item["rain"]["1h"]
+                    del item["rain"]
+                except:
+                    item["rain_mm"] = 0
+                try: 
+                    item["snow_mm"] = item["snow"]["1h"]
+                except:
+                    item["snow_mm"] = 0
+
+                item["condition_name"] = item["weather"][0]["main"]
+                item["condition_description"] = item["weather"][0]["description"]
+                
+                del item["weather"]
+                
+
+            data_current_hourly = data["current"]
+            del data_current_hourly["sunrise"]
+            del data_current_hourly["sunset"]
+
+            data_forecast_hourly = data["hourly"]
+
+            df_current = pd.DataFrame(data_current_hourly, index=[0])
+            df_current['pop'] = 0
+            df_current["current_or_forecast"] = "Current"
+
+            df_forecast = pd.DataFrame( data_forecast_hourly, index=range(1, len(data_forecast_hourly)+1) )
+            df_forecast["current_or_forecast"] = "Forecast"
+
+            df_combined = pd.concat([df_current, df_forecast])
+            df_combined["location_key"] = key
+            df_combined["dt"] = pd.to_datetime(df_combined['dt'],unit='s')
+            # connection to PostgreSQL is created and rows are inserted
             
-        print(data)
+            print(df_combined.head())
 
-        with open('data_pipeline/testdata/test2.json', 'w') as file_out:
-            json.dump(data, file_out)
-
-        # connection to PostgreSQL is created and rows are inserted
-        
-        # print("Writing data.")
-        # column_string = """("datetime",Current_or_Forecast,Location_Key,Temperature,Feels_Like,Pressure,Humidity,
-        #                     Dew_Point,Clouds,Visibility,REAL,Wind_Direction,Condition_Name,Condition_Description)"""
-        # sql = qb.create_insert_statement('security_price_daily', column_string, sb.table_to_string(df))
-        # qe.execute_query(sql)
-        # qe.close_()
-    # except:
-        # print("There was a problem.")
+            print("Writing data.")
+            column_string = """("datetime",Temperature,Feels_Like,Pressure,Humidity,Dew_Point,UVI,Clouds,
+                                Visibility,Wind_Speed,Wind_Direction,Probability_of_Precipitation,Rain_mm,
+                                Snow_mm,Condition_Name,Condition_Description,Current_or_Forecast,Location_Key)"""
+            sql = qb.create_insert_statement('Weather_Hourly', column_string, sb.table_to_string(df_combined))
+            print(sql)
+            qe.execute_query(sql)
+            
+qe.close_()
+        # except:
+            # print("There was a problem.")
 

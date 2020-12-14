@@ -41,15 +41,14 @@ class query_executor:
             return results
 
     def execute_query(self, sql):
-        try: 
+        # try: 
             cursor = self.connector.cursor()
             cursor.execute(sql)
             cursor.commit()
             cursor.close()
-            return "Query execution success."
-        except: 
-            cursor.close()
-            return "Query execution failed."    
+            # return "Query execution success."
+        # except: 
+            # return "Query execution failed."    
             
     def close_(self):
         self.connector.close()

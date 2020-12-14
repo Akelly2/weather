@@ -28,8 +28,6 @@ sql = """ SELECT Location_Key, Latitude, Longitude FROM "Location" """
 location_list = qe.get_results(sql, result_format="dict-list")
 
 for location in location_list: 
-
-
     print('Accessing data for:', location["location_key"], location["latitude"], location["longitude"])
 
     # request and response is done
@@ -43,7 +41,7 @@ for location in location_list:
         headers={'Accept': 'application/json'}
     )
 
-    with open('data_pipeline/testdata/test.json', 'w') as file_out:
+    with open(f'data_pipeline/data/location{location["location_key"]}.json', 'w') as file_out:
         json.dump(response.json(), file_out)
 
 # df = pd.read_json(io.StringIO(response.content.decode('utf-8')))
