@@ -32,7 +32,8 @@ class query_executor:
         if result_format == "df":
             return pd.read_sql(sql, self.connector)
         elif result_format == "dict-list":
-            cursor = self.connector.cursor().execute(sql)
+            cursor = self.connector.cursor()
+            cursor.execute(sql)
             columns = [column[0] for column in cursor.description]
             results = []
             for row in cursor.fetchall():
@@ -41,14 +42,10 @@ class query_executor:
             return results
 
     def execute_query(self, sql):
-        # try: 
-            cursor = self.connector.cursor()
-            cursor.execute(sql)
-            cursor.commit()
-            cursor.close()
-            # return "Query execution success."
-        # except: 
-            # return "Query execution failed."    
+        cursor = self.connector.cursor()
+        cursor.execute(sql)
+        cursor.commit()
+        cursor.close()    
             
     def close_(self):
         self.connector.close()
