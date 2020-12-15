@@ -1,7 +1,7 @@
--- there is no intention to keep this data, it will be overwritten 
+DROP TABLE Weather_Hourly; 
 CREATE TABLE Weather_Hourly (
-    "datetime" datetime,
-    Current_or_Forecast varchar(15),
+    "datetime" TIMESTAMP,
+    Current_or_Forecast VARCHAR(15),
     Location_Key SMALLINT,
     Temperature REAL,
     Feels_Like REAL,
