@@ -2,7 +2,7 @@
 local modules
 """
 # secrets
-from secrets import psql_dsn, openweathermap_api_key
+from secrets import psql_dsn
 # local classes
 from database_connector import query_executor, query_builder
 from data_reader import data_reader
@@ -13,12 +13,9 @@ modules
 import json
 import pandas as pd
 pd.set_option('max_colwidth', None)
-import io
 import os
 import requests
 import pyodbc
-import sys
-from datetime import datetime, timedelta
 
 sb = string_builder()
 qb = query_builder()
@@ -87,13 +84,10 @@ for filename in os.listdir('data_pipeline/data'):
         df_combined["dt"] = df_combined["dt"].map(lambda dt: str(dt))
         
         # connection to PostgreSQL is created and rows are inserted
-        
-        print(df_combined.head())
-
         print("Writing data.")
         column_string = """("datetime",Temperature,Feels_Like,Pressure,Humidity,Dew_Point,UVI,Clouds,
-                            Visibility,Wind_Speed,Wind_Direction,Probability_of_Precipitation,Rain_mm,
-                            Snow_mm,Condition_Name,Condition_Description,Current_or_Forecast,Location_Key)"""
+                            Visibility,Wind_Speed,Wind_Direction,Rain_mm,
+                            Snow_mm,Condition_Name,Condition_Description,Probability_of_Precipitation,Current_or_Forecast,Location_Key)"""
         sql = qb.create_insert_statement('Weather_Hourly', column_string, sb.table_to_string(df_combined))
         # print(sql)
         qe.execute_query(f"DELETE FROM weather_hourly WHERE location_key = {key};")

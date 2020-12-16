@@ -13,11 +13,9 @@ modules
 import pandas as pd
 pd.set_option('max_colwidth', None)
 import json
-import io
 import requests
 import pyodbc
 import sys
-from datetime import datetime, timedelta
 
 sb = string_builder()
 qb = query_builder()
@@ -36,6 +34,7 @@ for location in location_list:
         params={
             'lat': location["latitude"], 'lon': location["longitude"],
             'exclude': 'minutely,alerts',
+            'units': 'metric',
             'appid': openweathermap_api_key
         },
         headers={'Accept': 'application/json'}
@@ -44,4 +43,3 @@ for location in location_list:
     with open(f'data_pipeline/data/location{location["location_key"]}.json', 'w') as file_out:
         json.dump(response.json(), file_out)
 
-# df = pd.read_json(io.StringIO(response.content.decode('utf-8')))
