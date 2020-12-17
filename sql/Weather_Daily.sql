@@ -2,6 +2,8 @@ CREATE TABLE Weather_Daily (
     "datetime" TIMESTAMP,
     Current_or_Forecast VARCHAR(15),
     Location_Key INT, 
+    Temperature REAL,
+    Feels_Like REAL,
     Day_Temp REAL,
     Min_Temp REAL,
     Max_Temp REAL,
