@@ -90,7 +90,7 @@ for filename in os.listdir('data_pipeline/data'):
                             Snow_mm,Condition_Name,Condition_Description,Probability_of_Precipitation,Current_or_Forecast,Location_Key)"""
         sql = qb.create_insert_statement('Weather_Hourly', column_string, sb.table_to_string(df_combined))
         # print(sql)
-        qe.execute_query(f"DELETE FROM weather_hourly WHERE location_key = {key};")
+        qe.execute_query(f"DELETE FROM weather_daily WHERE location_key = {key};")
         qe.execute_query(sql)
     # END with
 # END for

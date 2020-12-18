@@ -27,24 +27,6 @@ for filename in os.listdir('data_pipeline/data'):
     key = int(filename[8])
     with open(f'data_pipeline/data/{filename}', 'r') as file_in:
         json_data = json.load(file_in)
-        
-        # skyfall is reassigned
-        try: 
-            json_data["current"]["rain_mm"] = json_data["current"]["rain"]["1h"]
-            del json_data["current"]["rain"]
-        except:
-            json_data["current"]["rain_mm"] = 0
-        try: 
-            json_data["current"]["snow_mm"] = json_data["current"]["snow"]["1h"]
-            del json_data["current"]
-        except:
-            json_data["current"]["snow_mm"] = 0
-
-        # Conditions are reassigned as key-values
-        json_data["current"]["condition_name"] = json_data["current"]["weather"][0]["main"]
-        json_data["current"]["condition_description"] = json_data["current"]["weather"][0]["description"]
-        
-        del json_data["current"]["weather"]
 
         # The same transformation is applied to each forecast
         for item in json_data["daily"]:
@@ -74,45 +56,30 @@ for filename in os.listdir('data_pipeline/data'):
             del item["weather"]
             del item["temp"]
             del item["feels_like"]
-            
-        data_current_daily = json_data["current"]
-        del data_current_daily["sunrise"]
-        del data_current_daily["sunset"]
 
         data_forecast_daily = json_data["daily"]
 
-        df_current = pd.DataFrame(data_current_daily, index=[0])
-        df_current['pop'] = 0
-        df_current["current_or_forecast"] = "Current"
-
         df_forecast = pd.DataFrame( data_forecast_daily, index=range(1, len(data_forecast_daily)+1) )
+        df_forecast["location_key"] = key
         df_forecast["current_or_forecast"] = "Forecast"
 
-        df_combined = pd.concat([
-            df_current, 
-            df_forecast])
-        df_combined["location_key"] = key
-
-        df_combined["dt"] = pd.to_datetime(df_combined['dt'], unit='s')
-        df_combined["sunrise"] = pd.to_datetime(df_combined['sunrise'], unit='s')
-        df_combined["sunset"] = pd.to_datetime(df_combined['sunset'], unit='s')
+        df_forecast["dt"] = pd.to_datetime(df_forecast['dt'], unit='s')
+        df_forecast["sunrise"] = pd.to_datetime(df_forecast['sunrise'], unit='s')
+        df_forecast["sunset"] = pd.to_datetime(df_forecast['sunset'], unit='s')
         
-        df_combined["dt"] = df_combined["dt"].map(lambda dt: str(dt))
-        df_combined["sunrise"] = df_combined["sunrise"].map(lambda dt: str(dt))
-        df_combined["sunset"] = df_combined["sunset"].map(lambda dt: str(dt))
-        
-        print(df_combined.columns)
+        df_forecast["dt"] = df_forecast["dt"].map(lambda dt: str(dt))
+        df_forecast["sunrise"] = df_forecast["sunrise"].map(lambda dt: str(dt))
+        df_forecast["sunset"] = df_forecast["sunset"].map(lambda dt: str(dt))
 
         # connection to PostgreSQL is created and rows are inserted
         print("Writing data.")
         column_string = """
-            ("datetime",Temperature,Feels_Like,Pressure,Humidity,
-            Dew_Point,UVI,Clouds,Visibility,Wind_Speed,Wind_Direction,Rain_mm,Snow_mm,Condition_Name,
-            Condition_Description,Probability_of_Precipitation,Current_or_Forecast,Sunrise,Sunset,
+            ("datetime",Sunrise,Sunset,Pressure,Humidity,Dew_Point,Wind_Speed,Wind_Direction,
+            Clouds,Probability_of_Precipitation,UVI,Rain_mm,Snow_mm,
             Day_Temp,Min_Temp,Max_Temp,Night_Temp,Evening_Temp,
-            Morning_Temp,Day_FL,Night_FL,Evening_FL,Morning_FL,Location_Key) """
-        sql = qb.create_insert_statement('Weather_Daily', column_string, sb.table_to_string(df_combined))
-        print(sql)
+            Morning_Temp,Day_FL,Night_FL,Evening_FL,Morning_FL,Condition_Name,
+            Condition_Description,Location_Key,Current_or_Forecast) """
+        sql = qb.create_insert_statement('Weather_Daily', column_string, sb.table_to_string(df_forecast))
         qe.execute_query(f"DELETE FROM weather_daily WHERE location_key = {key};")
         qe.execute_query(sql)
     # END with
