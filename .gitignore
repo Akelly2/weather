@@ -5,3 +5,6 @@ __pycache__/
 testdata/
 data/
 test.py
+
+web/secrets.py
+bootstrap/

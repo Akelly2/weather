@@ -4,18 +4,37 @@
 <title> Overview </title>
 
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static', filename='style/bootstrap/js/bootstrap.min.js') }}"></script>
 
+    <script>
+        var data = '{{ current[0] }}';
+        console.log(data);
+    </script>
 </head>
 
 <body>
-    <header>
-
-    </header>
-
-    <div>
-        {{ json_data }}
+<header>
+</header>
+<div class="container-fluid mt-2">
+    
+    <div class="card m-3">
+        <h3> {{ current[0]['Temperature'] }}&#176 </h3>
     </div>
-
+    <div>
+        <div>
+            {% for item in daily_forecast %}
+                <div>
+                    <p>{{ item['datetime'] }}</p>
+                    <p>{{ item['max_temp'] }}&#176</p>
+                    <p>{{ item['min_temp'] }}&#176</p>
+                    <p>{{ item['condition_description'] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 </body>
 
 </html>
