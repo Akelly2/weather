@@ -19,8 +19,15 @@
 </header>
 <div class="container-fluid mt-2">
     
-    <div class="card m-3">
-        <h3> {{ current[0]['Temperature'] }}&#176 </h3>
+    <div class="card m-3 p-2 col-3">
+        <h3> {{ current[0]['temperature'] }}&#176 </h3>
+        <p class="text-secondary"> Feels like {{ current[0]['feels_like'] }}&#176 </p>
+
+        <p class=""> {{ current[0]['pressure'] }}hPa </p>
+        <p class=""> Humidity:  {{ current[0]['humidity'] }}% </p>
+        <p class=""> Wind Speed: {{ current[0]['wind_speed'] }} 
+            <span style="display: inline-block;transform: rotate({{ current[0]['wind_direction'] }}deg);"> &#11165; </span>  
+        </p>
     </div>
     <div>
         <div>
