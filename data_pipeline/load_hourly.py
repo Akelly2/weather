@@ -24,7 +24,7 @@ qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 
 for filename in os.listdir('data_pipeline/data'):
     # file is opened
-    key = filename[8]
+    key = int(filename[8])
     with open(f'data_pipeline/data/{filename}', 'r') as file_in:
         data = json.load(file_in)
         
@@ -36,7 +36,7 @@ for filename in os.listdir('data_pipeline/data'):
             data["current"]["rain_mm"] = 0
         try: 
             data["current"]["snow_mm"] = data["current"]["snow"]["1h"]
-            del data["current"]
+            del data["current"]["snow"]
         except:
             data["current"]["snow_mm"] = 0
 

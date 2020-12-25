@@ -10,6 +10,7 @@ from string_builder import string_builder
 """
 modules
 """
+from datetime import datetime
 import pandas as pd
 pd.set_option('max_colwidth', None)
 import json
@@ -42,4 +43,7 @@ for location in location_list:
 
     with open(f'data_pipeline/data/location{location["location_key"]}.json', 'w') as file_out:
         json.dump(response.json(), file_out)
+
+with open('data_pipeline/time.txt', 'w') as file_out:
+    file_out.write(str(datetime.now()))
 

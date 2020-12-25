@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='style/bootstrap/js/bootstrap.min.js') }}"></script>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
     <script>
         var data = '{{ current[0] }}';
         console.log(data);
@@ -18,29 +19,28 @@
 <header>
 </header>
 <div class="container-fluid mt-2">
-    
-    <div class="card m-3 p-2 col-3">
-        <h3> {{ current[0]['temperature'] }}&#176 </h3>
-        <p class="text-secondary"> Feels like {{ current[0]['feels_like'] }}&#176 </p>
-
-        <p class=""> {{ current[0]['pressure'] }}hPa </p>
+    <section class="card m-3 p-2 col-3">
+        <h3> {{ current[0]['temperature'] }} <span>&#176</span>C </h3>
+        <small class="text-secondary"> Feels like {{ current[0]['feels_like'] }} <span>&#176</span>C </small>
+        
+        <p class=""> Pressure: {{ current[0]['pressure'] }}hPa </p>
         <p class=""> Humidity:  {{ current[0]['humidity'] }}% </p>
-        <p class=""> Wind Speed: {{ current[0]['wind_speed'] }} 
+        <p class=""> Wind: {{ current[0]['wind_speed'] }} km/h
             <span style="display: inline-block;transform: rotate({{ current[0]['wind_direction'] }}deg);"> &#11165; </span>  
         </p>
-    </div>
-    <div>
-        <div>
-            {% for item in daily_forecast %}
-                <div>
-                    <p>{{ item['datetime'] }}</p>
-                    <p>{{ item['max_temp'] }}&#176</p>
-                    <p>{{ item['min_temp'] }}&#176</p>
-                    <p>{{ item['condition_description'] }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+    </section>
+
+    <section>
+        {% for item in daily_forecast %}
+            <div>
+                <p>{{ item['datetime'] }}</p>
+                <p>{{ item['max_temp'] }} <span>&#176</span>C </p>
+                <p>{{ item['min_temp'] }} <span>&#176</span>C </p>
+                <p></p>
+                <p>{{ item['condition_description'] }}</p>
+            </div>
+        {% endfor %}
+    </section>
 </div>
 </body>
 
