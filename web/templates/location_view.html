@@ -4,6 +4,7 @@
 <title> Overview </title>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='style/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -19,81 +20,88 @@
 <header>
 </header>
 <div class="container-fluid mt-2">
-    <section class="card m-3 p-2 col-4">
-        
-        <div class="row mb-4">
-            <div class="col-6 mb-0">        
-                <h3 class="mb-0"> {{ current[0]['temperature'] }} <span>&#176</span>C </h3>
-                <small class="text-secondary">Feels like</small>
-                <small class="text-secondary"> {{ current[0]['feels_like'] }} <span>&#176</span>C </small>
-            </div>
-            <div class="col-6">
-                <img src=" {{ url_for('static', filename='icon/' + current[0]['icon_code'] + '@4x.png') }}" width="80" height="80" />
-                <small class="text-secondary"> {{ current[0]['condition_description'] }} </small>
-            </div>
-        </div>
-        
-        <div class="row"> 
-            <div class="col-6">
-                <small class="text-secondary">Sunrise</small>
-                <p >{{ daily_forecast[0]['sunrise'] }}</p> 
-            </div>
-            <div class="col-6">
-                <small class="text-secondary">Sunset</small>            
-                <p> {{ daily_forecast[0]['sunset'] }}</p> 
-            </div>
-        </div>
+    <section class="my-1 p-2 col-md-5">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">        
+                        <h2 class="mb-0"> {{ current[0]['temperature'] }}<span>&#176</span>C </h2>
+                        <small class="text-secondary">Feels like {{ current[0]['feels_like'] }}<span>&#176</span>C </small>
+                        <h6> {{ current[0]['condition_description'] }} </h6>
+                    </div>
+                    <div class="col-6">
+                        <img src=" {{ url_for('static', filename='icon/' + current[0]['icon_code'] + '@4x.png') }}" width="120" height="120" />
+                    </div>
+                    <div class="col-12">
+                    </div>                    
+                </div>
 
-        <div class="row"> 
-            <div class="col-6">
-                <small class="text-secondary">Pressure</small>
-                <p >{{ current[0]['pressure'] }}hPa</p> 
-            </div>
-            <div class="col-6">
-                <small class="text-secondary">Humidity</small>            
-                <p> {{ current[0]['humidity'] }}%</p> 
+                
+                <div class="row"> 
+                    <div class="col-6">
+                        <small class="text-secondary">Sunrise</small>
+                        <p >{{ daily_forecast[0]['sunrise'] }}</p> 
+                    </div>
+                    <div class="col-6">
+                        <small class="text-secondary">Sunset</small>            
+                        <p> {{ daily_forecast[0]['sunset'] }}</p> 
+                    </div>
+                </div>
+
+                <div class="row"> 
+                    <div class="col-6">
+                        <small class="text-secondary">Pressure</small>
+                        <p >{{ current[0]['pressure'] }}hPa</p> 
+                    </div>
+                    <div class="col-6">
+                        <small class="text-secondary">Humidity</small>            
+                        <p> {{ current[0]['humidity'] }}%</p> 
+                    </div>
+                </div>
+
+                <div class="row"> 
+                    <div class="col-6">
+                        <small class="text-secondary">Wind Speed</small>
+                        <p >{{ current[0]['wind_speed'] }}km/h
+                            <span style="display: inline-block;transform: rotate({{ current[0]['wind_direction'] }}deg);"> 
+                                &#11165; 
+                            </span>  
+                        </p> 
+                    </div>
+                    <div class="col-6">
+                        <small class="text-secondary">Visibility</small>
+                        <p >{{ current[0]['visibility'] }}m</p> 
+                    </div>
+                </div>
+
+                <div class="row"> 
+                    <div class="col-6">
+                        <small class="text-secondary">Cloud cover</small>
+                        <p >{{ current[0]['clouds'] }}%</p> 
+                    </div>
+                    <div class="col-6">
+                        <small class="text-secondary">UV Index</small>            
+                        <p> {{ current[0]['uvi'] }}</p> 
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="row"> 
-            <div class="col-6">
-                <small class="text-secondary">Wind Speed</small>
-                <p >{{ current[0]['wind_speed'] }}km/h
-                    <span style="display: inline-block;transform: rotate({{ current[0]['wind_direction'] }}deg);"> 
-                        &#11165; 
-                    </span>  
-                </p> 
-            </div>
-            <div class="col-6">
-                <small class="text-secondary">Visibility</small>
-                <p >{{ current[0]['visibility'] }}m</p> 
-            </div>
-        </div>
-
-        <div class="row"> 
-            <div class="col-6">
-                <small class="text-secondary">Cloud cover</small>
-                <p >{{ current[0]['clouds'] }}%</p> 
-            </div>
-            <div class="col-6">
-                <small class="text-secondary">UV Index</small>            
-                <p> {{ current[0]['uvi'] }}</p> 
-            </div>
-        </div>
-
     </section>
     <p>{{ current[0]['datetime'] }}</p>
 
-    <section class="col-8"></section>
+    <section class="col-md-7"></section>
 
+    <!-- daily -->
     <section>
         {% for item in daily_forecast %}
-            <div>
-                <p>{{ item['datetime'] }}</p>
-                <p>{{ item['max_temp'] }} <span>&#176</span>C </p>
-                <p>{{ item['min_temp'] }} <span>&#176</span>C </p>
-                <p></p>
-                <p>{{ item['condition_description'] }}</p>
+            <hr/>
+            <div class="row">
+                <div class="col-4">{{ item['day_of_week'] }}</div>
+                <div class="col">
+                    <img src=" {{ url_for('static', filename='icon/' + item['icon_code'] + '@4x.png') }}" width="50" height="50" />
+                </div>
+                <div class="col">{{ item['max_temp'] }} <span>&#176</span>C </div>
+                <div class="col">{{ item['min_temp'] }} <span>&#176</span>C </div>
             </div>
         {% endfor %}
     </section>

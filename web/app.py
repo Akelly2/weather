@@ -35,7 +35,5 @@ def route_location(location):
         daily_forecast=json.loads(json.dumps(daily_forecast))
     )
 
-
-
 if __name__ == '__main__':
    app.run()
