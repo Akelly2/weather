@@ -19,16 +19,72 @@
 <header>
 </header>
 <div class="container-fluid mt-2">
-    <section class="card m-3 p-2 col-3">
-        <h3> {{ current[0]['temperature'] }} <span>&#176</span>C </h3>
-        <small class="text-secondary"> Feels like {{ current[0]['feels_like'] }} <span>&#176</span>C </small>
+    <section class="card m-3 p-2 col-4">
         
-        <p class=""> Pressure: {{ current[0]['pressure'] }}hPa </p>
-        <p class=""> Humidity:  {{ current[0]['humidity'] }}% </p>
-        <p class=""> Wind: {{ current[0]['wind_speed'] }} km/h
-            <span style="display: inline-block;transform: rotate({{ current[0]['wind_direction'] }}deg);"> &#11165; </span>  
-        </p>
+        <div class="row mb-4">
+            <div class="col-6 mb-0">        
+                <h3 class="mb-0"> {{ current[0]['temperature'] }} <span>&#176</span>C </h3>
+                <small class="text-secondary">Feels like</small>
+                <small class="text-secondary"> {{ current[0]['feels_like'] }} <span>&#176</span>C </small>
+            </div>
+            <div class="col-6">
+                <img src=" {{ url_for('static', filename='icon/' + current[0]['icon_code'] + '@4x.png') }}" width="80" height="80" />
+                <small class="text-secondary"> {{ current[0]['condition_description'] }} </small>
+            </div>
+        </div>
+        
+        <div class="row"> 
+            <div class="col-6">
+                <small class="text-secondary">Sunrise</small>
+                <p >{{ daily_forecast[0]['sunrise'] }}</p> 
+            </div>
+            <div class="col-6">
+                <small class="text-secondary">Sunset</small>            
+                <p> {{ daily_forecast[0]['sunset'] }}</p> 
+            </div>
+        </div>
+
+        <div class="row"> 
+            <div class="col-6">
+                <small class="text-secondary">Pressure</small>
+                <p >{{ current[0]['pressure'] }}hPa</p> 
+            </div>
+            <div class="col-6">
+                <small class="text-secondary">Humidity</small>            
+                <p> {{ current[0]['humidity'] }}%</p> 
+            </div>
+        </div>
+
+        <div class="row"> 
+            <div class="col-6">
+                <small class="text-secondary">Wind Speed</small>
+                <p >{{ current[0]['wind_speed'] }}km/h
+                    <span style="display: inline-block;transform: rotate({{ current[0]['wind_direction'] }}deg);"> 
+                        &#11165; 
+                    </span>  
+                </p> 
+            </div>
+            <div class="col-6">
+                <small class="text-secondary">Visibility</small>
+                <p >{{ current[0]['visibility'] }}m</p> 
+            </div>
+        </div>
+
+        <div class="row"> 
+            <div class="col-6">
+                <small class="text-secondary">Cloud cover</small>
+                <p >{{ current[0]['clouds'] }}%</p> 
+            </div>
+            <div class="col-6">
+                <small class="text-secondary">UV Index</small>            
+                <p> {{ current[0]['uvi'] }}</p> 
+            </div>
+        </div>
+
     </section>
+    <p>{{ current[0]['datetime'] }}</p>
+
+    <section class="col-8"></section>
 
     <section>
         {% for item in daily_forecast %}
@@ -41,6 +97,7 @@
             </div>
         {% endfor %}
     </section>
+
 </div>
 </body>
 

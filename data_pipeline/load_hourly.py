@@ -43,6 +43,7 @@ for filename in os.listdir('data_pipeline/data'):
         # Conditions are reassigned as key-values
         data["current"]["condition_name"] = data["current"]["weather"][0]["main"]
         data["current"]["condition_description"] = data["current"]["weather"][0]["description"]
+        data["current"]["icon"] = data["current"]["weather"][0]["icon"]
         
         del data["current"]["weather"]
 
@@ -62,6 +63,7 @@ for filename in os.listdir('data_pipeline/data'):
 
             item["condition_name"] = item["weather"][0]["main"]
             item["condition_description"] = item["weather"][0]["description"]
+            item["icon"] = item["weather"][0]["icon"]
             
             del item["weather"]
             
@@ -87,7 +89,8 @@ for filename in os.listdir('data_pipeline/data'):
         print("Writing data.")
         column_string = """("datetime",Temperature,Feels_Like,Pressure,Humidity,Dew_Point,UVI,Clouds,
                             Visibility,Wind_Speed,Wind_Direction,Rain_mm,
-                            Snow_mm,Condition_Name,Condition_Description,Probability_of_Precipitation,Current_or_Forecast,Location_Key)"""
+                            Snow_mm,Condition_Name,Condition_Description,Icon_Code,
+                            Probability_of_Precipitation,Current_or_Forecast,Location_Key)"""
         sql = qb.create_insert_statement('Weather_Hourly', column_string, sb.table_to_string(df_combined))
         qe.execute_query(f"DELETE FROM weather_hourly WHERE location_key = {key};")
         qe.execute_query(sql)

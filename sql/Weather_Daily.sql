@@ -1,3 +1,4 @@
+DROP TABLE Weather_Daily;
 CREATE TABLE Weather_Daily (
     "datetime" TIMESTAMP,
     Current_or_Forecast VARCHAR(15),
@@ -24,6 +25,7 @@ CREATE TABLE Weather_Daily (
     Snow_mm VARCHAR(100),
     Condition_Name VARCHAR(100),
     Condition_Description VARCHAR(100),
+    Icon_Code CHAR(3),
     Sunrise TIMESTAMP,
     Sunset TIMESTAMP
 );

@@ -18,4 +18,5 @@ CREATE TABLE Weather_Hourly (
     Snow_mm VARCHAR(100),
     Condition_Name VARCHAR(100),
     Condition_Description VARCHAR(100),
+    Icon_Code CHAR(3)
 );

@@ -52,6 +52,7 @@ for filename in os.listdir('data_pipeline/data'):
 
             item["condition_name"] = item["weather"][0]["main"]
             item["condition_description"] = item["weather"][0]["description"]
+            item["icon"] = item["weather"][0]["icon"]
             
             del item["weather"]
             del item["temp"]
@@ -78,7 +79,7 @@ for filename in os.listdir('data_pipeline/data'):
             Clouds,Probability_of_Precipitation,UVI,Rain_mm,Snow_mm,
             Day_Temp,Min_Temp,Max_Temp,Night_Temp,Evening_Temp,
             Morning_Temp,Day_FL,Night_FL,Evening_FL,Morning_FL,Condition_Name,
-            Condition_Description,Location_Key,Current_or_Forecast) """
+            Condition_Description,Icon_Code,Location_Key,Current_or_Forecast) """
         sql = qb.create_insert_statement('Weather_Daily', column_string, sb.table_to_string(df_forecast))
         qe.execute_query(f"DELETE FROM weather_daily WHERE location_key = {key};")
         qe.execute_query(sql)

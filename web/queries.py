@@ -1,6 +1,6 @@
 current_sql = """ 
     select 
-        cast("datetime" as varchar(100)) datetime,
+        cast("datetime" + interval '1 second' * timezone_offset as varchar(100)) datetime,
         cast (Temperature as int) Temperature,
         cast (Feels_Like as int) Feels_Like,
         Pressure,
@@ -15,6 +15,7 @@ current_sql = """
         Snow_mm,
         Condition_Name,
         Condition_Description,
+        Icon_Code,
         Probability_of_Precipitation,
         Current_or_Forecast,
         l.Location_Key 
@@ -40,6 +41,7 @@ hourly_sql = """
         Snow_mm,
         Condition_Name,
         Condition_Description,
+        Icon_Code,
         Probability_of_Precipitation,
         Current_or_Forecast,
         l.Location_Key
@@ -51,8 +53,8 @@ hourly_sql = """
 daily_sql = """
     select 
         cast("datetime" as varchar(100)) as datetime,
-        cast(Sunrise as varchar(100)) sunrise,
-        cast(Sunset as varchar(100)) sunset,
+        to_char(Sunrise + interval '1 second' * timezone_offset, 'hh12:mi AM') sunrise, 
+	    to_char(Sunset + interval '1 second' * timezone_offset, 'hh12:mi AM') sunset,
         Pressure,
         Humidity,
         Dew_Point,
