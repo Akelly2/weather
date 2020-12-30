@@ -4,12 +4,14 @@
 <title> Overview </title>
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='style/bootstrap/js/bootstrap.min.js') }}"></script>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/css/theme.css') }}">
+    
     <script>
         var data = '{{ current[0] }}';
         console.log(data);
@@ -20,20 +22,23 @@
 <header>
 </header>
 <div class="container-fluid mt-2">
-    <section class="my-1 p-2 col-md-5">
+    <section class="my-1 p-2 col-md-4">
         <div class="card">
+
             <div class="card-body">
+                <div class="mb-2">
+                    <h4 class="card-title mb-0">{{ current[0]['city'] }}, {{ current[0]['region'] }}</h4>
+                    <small class="text-secondary">Updated: {{ current[0]['datetime'] }} </small>
+                </div>
                 <div class="row">
-                    <div class="col-6">        
-                        <h2 class="mb-0"> {{ current[0]['temperature'] }}<span>&#176</span>C </h2>
+                    <div class="col-6">
+                        <h1 class="mb-0"> {{ current[0]['temperature'] }}<span>&#176</span>C </h1>
                         <small class="text-secondary">Feels like {{ current[0]['feels_like'] }}<span>&#176</span>C </small>
                         <h6> {{ current[0]['condition_description'] }} </h6>
                     </div>
                     <div class="col-6">
                         <img src=" {{ url_for('static', filename='icon/' + current[0]['icon_code'] + '@4x.png') }}" width="120" height="120" />
-                    </div>
-                    <div class="col-12">
-                    </div>                    
+                    </div>     
                 </div>
 
                 
@@ -87,24 +92,46 @@
             </div>
         </div>
     </section>
-    <p>{{ current[0]['datetime'] }}</p>
 
-    <section class="col-md-7"></section>
+    <section class="col-md-8"></section>
+
+    <!-- hourly -->
+    <div class="container-fluid">
+        <div class="row flex-row flex-nowrap weather-48">
+            {% for item in hourly_forecast %}
+                <div class="inline-block mx-2"> 
+                    <div class="">{{ item['datetime'] }}</div>
+                    <div class="">
+                        <img src=" {{ url_for('static', filename='icon/' + item['icon_code'] + '@4x.png') }}" width="50" height="50" />
+                    </div>
+                    {% if item['probability_of_precipitation'] > 0 %}
+                        <div class=" text-primary">{{ item['probability_of_precipitation'] }} </div>
+                    {% else %}
+                        <div class=""></div>
+                    {% endif %}
+                    <div class="">{{ item['temperature'] }} <span>&#176</span>C </div>
+                </div> 
+            {% endfor %}
+        </div>
+    </div>
 
     <!-- daily -->
-    <section>
+    <ul>
         {% for item in daily_forecast %}
             <hr/>
-            <div class="row">
+            <li class="row">
                 <div class="col-4">{{ item['day_of_week'] }}</div>
                 <div class="col">
                     <img src=" {{ url_for('static', filename='icon/' + item['icon_code'] + '@4x.png') }}" width="50" height="50" />
                 </div>
+                {% if item['probability_of_precipitation'] > 0 %}
+                    <div class="col text-primary">{{ item['probability_of_precipitation'] }} </div>
+                {% endif %}
                 <div class="col">{{ item['max_temp'] }} <span>&#176</span>C </div>
                 <div class="col">{{ item['min_temp'] }} <span>&#176</span>C </div>
-            </div>
+            </li>
         {% endfor %}
-    </section>
+    </ul>
 
 </div>
 </body>

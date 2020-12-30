@@ -18,7 +18,9 @@ current_sql = """
         Icon_Code,
         Probability_of_Precipitation,
         Current_or_Forecast,
-        l.Location_Key 
+        l.Location_Key, 
+        City,
+        Region
     from Weather_Hourly w 
         join "Location" l on w.Location_Key = l.Location_Key
     where City = ? 
@@ -26,9 +28,9 @@ current_sql = """
 
 hourly_sql = """ 
     select 
-        cast("datetime" as varchar(100)) datetime,
-        Temperature,
-        Feels_Like,
+        trim(leading '0' from cast(to_char("datetime" + interval '1 second' * timezone_offset, 'hh12 AM') as varchar(20))) datetime,  
+        cast (Temperature as int) Temperature,
+        cast (Feels_Like as int) Feels_Like,
         Pressure,
         Humidity,
         Dew_Point,
@@ -44,7 +46,9 @@ hourly_sql = """
         Icon_Code,
         Probability_of_Precipitation,
         Current_or_Forecast,
-        l.Location_Key
+        l.Location_Key,
+        City,
+        Region
     from Weather_Hourly w 
         join "Location" l on w.Location_Key = l.Location_Key
     where City = ? 
@@ -80,6 +84,8 @@ daily_sql = """
         initcap(Condition_Description) Condition_Description,
         Icon_Code,
         l.Location_Key,
+        City,
+        Region,
         Current_or_Forecast
     from Weather_Daily w 
         join "Location" l on w.location_key=l.location_key

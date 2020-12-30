@@ -34,7 +34,7 @@ for location in location_list:
         'https://api.openweathermap.org/data/2.5/onecall',
         params={
             'lat': location["latitude"], 'lon': location["longitude"],
-            'exclude': 'minutely,alerts',
+            'exclude': 'minutely',
             'units': 'metric',
             'appid': openweathermap_api_key
         },

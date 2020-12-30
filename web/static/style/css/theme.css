@@ -1,0 +1,8 @@
+body {
+    font-family: Calibri, "Open Sans";
+}
+
+.weather-48 {
+    overflow-x: scroll; 
+    white-space: nowrap;
+}
