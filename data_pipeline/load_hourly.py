@@ -39,6 +39,11 @@ for filename in os.listdir('data_pipeline/data'):
             del data["current"]["snow"]
         except:
             data["current"]["snow_mm"] = 0
+        
+        try:
+            del data["current"]["wind_gust"]
+        except:
+            pass
 
         # Conditions are reassigned as key-values
         data["current"]["condition_name"] = data["current"]["weather"][0]["main"]
@@ -66,14 +71,14 @@ for filename in os.listdir('data_pipeline/data'):
             item["icon"] = item["weather"][0]["icon"]
             
             del item["weather"]
-            
-        data_current_hourly = data["current"]
-        del data_current_hourly["sunrise"]
-        del data_current_hourly["sunset"]
+
+        data_current = data["current"]
+        del data_current["sunrise"]
+        del data_current["sunset"]
 
         data_forecast_hourly = data["hourly"]
 
-        df_current = pd.DataFrame(data_current_hourly, index=[0])
+        df_current = pd.DataFrame(data_current, index=[0])
         df_current['pop'] = 0
         df_current["current_or_forecast"] = "Current"
 
