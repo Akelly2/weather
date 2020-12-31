@@ -4,7 +4,11 @@ data_pipeline/test.json
 __pycache__/
 testdata/
 data/
+
 test.py
+test.html
+test.css
+test.js
 
 web/secrets.py
 bootstrap/
