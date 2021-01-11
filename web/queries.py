@@ -91,4 +91,15 @@ daily_sql = """
         join "Location" l on w.location_key=l.location_key
     where City = ?"""
 
-    
+location_search_sql = """
+        select 
+            City, 
+            Region, 
+            Country 
+        from "Location"
+        where 
+            lower(City) like lower(?)
+        order by City asc
+        limit 20
+    """    
+
