@@ -10,6 +10,8 @@ test.html
 test.css
 test.js
 
+data.sql
+
 web/secrets.py
 bootstrap/
 icon/

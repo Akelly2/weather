@@ -4,7 +4,7 @@
 <title> Overview </title>
 
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
@@ -22,15 +22,18 @@
 <body>
 <header>
 </header>
-
-<form class="form my-2 my-lg-0">
-    <div class="input-group">
-        <input name="locationsearch" type="text" class="form-control" placeholder="Find a place" aria-label="Find a place" aria-describedby="button-addon2">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Go</button>
-        </div>
+<div class="container-fluid">
+    <div class="vertical-center w-75">
+        <form class="container-fluid my-2 my-lg-0">
+            <div class="input-group">
+                <input name="locationsearch" type="text" class="form-control" placeholder="Find a place" aria-label="Find a place" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Go</button>
+                </div>
+            </div>
+        </form>
     </div>
-</form>
+</div>
 
 </body>
 </html>

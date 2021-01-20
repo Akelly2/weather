@@ -4,7 +4,7 @@
 <title> Overview </title>
 
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap/css/bootstrap.min.css') }}">
@@ -13,8 +13,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/css/theme.css') }}">
     
     <script>
-        var data = '{{ current[0] }}';
-        console.log(data);
+        var current_data = '{{ current[0] }}';
+        var daily_forecast = '{{ daily_forecast }}'
+        console.log(daily_forecast);
     </script>
 </head>
 
@@ -123,12 +124,20 @@
                 <div class="col-4">{{ item['day_of_week'] }}</div>
                 <div class="col">
                     <img src=" {{ url_for('static', filename='icon/' + item['icon_code'] + '@4x.png') }}" width="50" height="50" />
+                    {% if item['probability_of_precipitation'] > 0 %}
+                        <span class="text-primary">{{ item['probability_of_precipitation'] }}%</span>
+                    {% endif %}
+                    {% if item['rain_mm'] > 0 %}
+                        <span class="text-primary">{{ item['rain_mm'] }}cm </span>
+                    {% endif %}
+                    {% if item['snow_mm'] > 0 %}
+                        <span class="text-primary">{{ item['snow_mm'] }}cm </span>
+                    {% endif %}
                 </div>
-                {% if item['probability_of_precipitation'] > 0 %}
-                    <div class="col text-primary">{{ item['probability_of_precipitation'] }} </div>
-                {% endif %}
+                
                 <div class="col">{{ item['max_temp'] }} <span>&#176</span>C </div>
-                <div class="col">{{ item['min_temp'] }} <span>&#176</span>C </div>
+                <div class="col text-secondary">{{ item['min_temp'] }} <span>&#176</span>C </div>
+                
             </li>
         {% endfor %}
     </ul>

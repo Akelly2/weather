@@ -1,29 +1,19 @@
 import requests
 import pyodbc
-
 import json
-import time
-import urllib.error
-import urllib.parse
-import urllib.request
 
-from secrets import google_maps_api_key
-print(google_maps_api_key)
+from secrets import geocodio_api_key, example_address
 
-uri = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=49,-123&radius=500&types=food&name=harbour&key={google_maps_api_key}"
+# variable assignment
+base_uri = "https://api.geocod.io/v1.6/geocode"
+params = {
+    'api_key': geocodio_api_key,
+    'q': example_address,
+    'fields': 'timezone'
+}
+headers={'Accept': 'application/json'}
 
-geocoding_base_uri = "https://maps.googleapis.com/maps/api/geocode/json"
+# request and response
+response = requests.get(base_uri, params=params, headers=headers)
+print(response.json())
 
-
-City = "Vancouver"
-Region = "BC"
-Country = "CA"
-params = urllib.parse.urlencode(
-        {"address": f"{City},{Region},{Country}", "key": google_maps_api_key}
-    )
-url = f"{geocoding_base_uri}?{params}"
-response = urllib.request.urlopen(url)
-result = json.load(response)
-print(result)
-
-# timezone_base_uri = ""

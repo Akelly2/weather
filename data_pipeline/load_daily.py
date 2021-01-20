@@ -13,7 +13,7 @@ modules
 import json
 import pandas as pd
 pd.set_option('max_colwidth', None)
-import os
+import os, glob
 import requests
 import pyodbc
 
@@ -22,7 +22,8 @@ qb = query_builder()
 dr = data_reader()
 qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 
-for filename in os.listdir('data_pipeline/data'):
+filenames = glob.glob("data_pipeline/data/weather_at_*")
+for filename in filenames:
     # file is opened
     key = int(filename[8])
     with open(f'data_pipeline/data/{filename}', 'r') as file_in:

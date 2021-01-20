@@ -25,8 +25,8 @@ qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 
 for filename in os.listdir('data_pipeline/data'):
     # file is opened
-    key = int(filename[8])
     with open(f'data_pipeline/data/{filename}', 'r') as file_in:
+        # data is read
         json_data = json.load(file_in)
 
         try: 
