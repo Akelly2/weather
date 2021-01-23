@@ -27,8 +27,9 @@ current_sql = """
         and Current_or_Forecast = 'Current' """
 
 hourly_sql = """ 
-    select 
-        trim(leading '0' from cast(to_char("datetime" + interval '1 second' * timezone_offset, 'hh12 AM') as varchar(20))) datetime,  
+select 
+		cast("datetime" as varchar(100)) as datetime,
+        trim(leading '0' from cast(to_char("datetime" + interval '1 second' * timezone_offset, 'hh12 AM') as varchar(20))) ampmhour,  
         cast (Temperature as int) Temperature,
         cast (Feels_Like as int) Feels_Like,
         Pressure,
@@ -51,8 +52,11 @@ hourly_sql = """
         Region
     from Weather_Hourly w 
         join "Location" l on w.Location_Key = l.Location_Key
-    where City = ? 
-        and Current_or_Forecast = 'Forecast' """
+    where City = ?
+        and Current_or_Forecast = 'Forecast'
+	order by 
+		"datetime" asc
+    """
 
 daily_sql = """
     select 

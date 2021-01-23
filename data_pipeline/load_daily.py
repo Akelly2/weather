@@ -25,8 +25,8 @@ qe = query_executor(pyodbc.connect(f"DSN={psql_dsn}"))
 filenames = glob.glob("data_pipeline/data/weather_at_*")
 for filename in filenames:
     # file is opened
-    key = int(filename[8])
-    with open(f'data_pipeline/data/{filename}', 'r') as file_in:
+    key = int(filename[30:-5])
+    with open(f'{filename}', 'r') as file_in:
         json_data = json.load(file_in)
 
         # The same transformation is applied to each forecast

@@ -45,7 +45,7 @@ class query_executor:
         cursor = self.connector.cursor()
         cursor.execute(sql)
         cursor.commit()
-        cursor.close()    
+        cursor.close()
             
     def close_(self):
         self.connector.close()
